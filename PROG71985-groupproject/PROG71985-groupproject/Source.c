@@ -70,21 +70,32 @@ int main(void) {
 				tasks = addTask(tasks, &numofTasks);
 				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
+			case 2:
+
+				break;
 			case 3:
-				printAllTasks(tasks, numofTasks);
+				
 				break;
 			case 4:
+				printAllTasks(tasks, numofTasks);
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
 				break;
 			default:
 				printf("Invalid entry\n");
 				break;
-
 			}
 		}
 		else {
 			printf("Invalid entry\n");
 		}
-	} while (option != 4);
+	} while (option != 8);
 
 	fclose(fpRead);
 	fclose(fpWrite);
@@ -184,7 +195,11 @@ void printAllTasks(TASK* tasks, int num) {
 void welcomeMenu() {
 	printf("\nWelcome to your task manager\n");
 	printf("1) Add new task\n");
-	printf("2)\n");
-	printf("3) Display all tasks\n");
-	printf("4) Exit\n");
+	printf("2) Delete existing task\n");
+	printf("3) Update existing task\n");
+	printf("4) Display all tasks\n");
+	printf("5) Display a single task\n");
+	printf("6) Display a range of tasks\n");
+	printf("7) Search for a task\n");
+	printf("8) Exit\n");
 }
