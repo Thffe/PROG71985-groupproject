@@ -59,7 +59,7 @@ int main(void) {
 	writeTasks(fpWrite, outFile, tasks, numofTasks);
 	
 
-	int option;
+	int option, userDefinedTaskNum;
 	do {
 		welcomeMenu();
 		if (scanf_s("%d", &option)) {
@@ -80,6 +80,13 @@ int main(void) {
 				printAllTasks(tasks, numofTasks);
 				break;
 			case 5:
+				printf("Enter the task number you wish you view: ");
+				if (scanf_s("%d", &userDefinedTaskNum) && userDefinedTaskNum <= numofTasks && userDefinedTaskNum > 0) {
+					printSingleTask(tasks, userDefinedTaskNum);
+				}
+				else {
+					printf("Task number out of readable task range or invalid.");
+				}
 				break;
 			case 6:
 				break;
@@ -190,6 +197,10 @@ void printAllTasks(TASK* tasks, int num) {
 	for (int i = 0; i < num; i++) {
 		printTask(&tasks[i]);
 	}
+}
+
+void printSingleTask(TASK* tasks, int num) {
+	printTask(&tasks[num - 1]);
 }
 
 void welcomeMenu() {

@@ -7,3 +7,4 @@ void welcomeMenu();
 TASK* addTask(TASK*, int*);
 void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);
+void printSingleTask(TASK* tasks, int num);
