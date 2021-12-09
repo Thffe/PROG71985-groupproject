@@ -1,5 +1,6 @@
 /*
 William Kubica
+Anthony Rooyakkers
 
 PROG71985 Group Project
 
@@ -59,7 +60,7 @@ int main(void) {
 	writeTasks(fpWrite, outFile, tasks, numofTasks);
 	
 
-	int option, userDefinedTaskNum;
+	int option, userDefinedTaskNum, lowEnd, highEnd;
 	do {
 		welcomeMenu();
 		if (scanf_s("%d", &option)) {
@@ -89,6 +90,20 @@ int main(void) {
 				}
 				break;
 			case 6:
+				printf("Enter the lowest task number to view: ");
+				if (scanf_s("%d", &lowEnd) && lowEnd > 0 && lowEnd < numofTasks) {
+					printf("Enter the highest task number to view: ");
+					if (scanf_s("%d", &highEnd) && highEnd > lowEnd && highEnd <= numofTasks) {
+						printf("Displaying tasks %d through %d\n", lowEnd, highEnd);
+						printRangeTasks(tasks, lowEnd, highEnd);
+					}
+					else {
+						printf("High end out of bounds");
+					}
+				}
+				else {
+					printf("Low end out of bounds");
+				}
 				break;
 			case 7:
 				break;
@@ -201,6 +216,13 @@ void printAllTasks(TASK* tasks, int num) {
 
 void printSingleTask(TASK* tasks, int num) {
 	printTask(&tasks[num - 1]);
+}
+
+void printRangeTasks(TASK* tasks, int lowEnd, int highEnd) {
+	while (lowEnd < highEnd) {
+		printTask(&tasks[lowEnd - 1]);
+		lowEnd++;
+	}
 }
 
 void welcomeMenu() {
