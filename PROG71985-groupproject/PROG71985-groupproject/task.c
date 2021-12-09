@@ -20,7 +20,12 @@ void setOrder(TASK* t, int o) {
 void setText(TASK* t, char c[]) {
 	strncpy_s(t->text, MAXSTRING, c, MAXSTRING);
 }
-
+void incOrder(TASK* t) {
+	t->order++;
+}
+void decOrder(TASK* t) {
+	t->order--;
+}
 TASK readTask(FILE* fp) {
 	char line[MAXSTRING];
 	int id;

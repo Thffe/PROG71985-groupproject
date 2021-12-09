@@ -96,24 +96,26 @@ int main(void) {
 TASK* addTask(TASK* tasks, int* numofTasks) {
 
 	//getting the order of new task
-	int num;
+	int neworder;
 	printf("Enter a order (enter -1 to exit)\n");
 	do {
-		scanf_s("%d", &num);
+		scanf_s("%d", &neworder);
 
-		if (num == -1) {
+		if (neworder == -1) {
 			return tasks;
 		}
-	} while (num <= 0);
+	} while (neworder <= 0);
 
-	
-	*(numofTasks) = *(numofTasks) + 1;
+
+
 
 	//setting new task's order to the lowest order + 1,
 	//only if new task's order is greater than lowest order + 1
-	if (num > *(numofTasks)+1) {
-		num = *(numofTasks)+1;
+	if (neworder > *(numofTasks)+1) {
+		neworder = *(numofTasks)+1;
+		printf("defaulting to order %d\n", neworder);
 	}
+	*(numofTasks) = *(numofTasks)+1;
 
 	TASK* newtasks;
 	if ((newtasks = (TASK*)malloc(sizeof(TASK) * *numofTasks)) == NULL) {
@@ -121,29 +123,30 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 		exit(1);
 	}
 	//setting all tasks that come before the new task
-	for (int i = 0; i < num - 1; i++) {
+	for (int i = 0; i < neworder - 1; i++) {
 		newtasks[i] = tasks[i];
 	}
+
 	//slotting in the new task
 	char str[MAXSTRING];
 	printf("Enter the task\n");
-	scanf_s("%99[^\n]", str, MAXSTRING);
-	newtasks[num-1] = createTask(num, str);
+	fgets(str, MAXSTRING, stdin);
+	fgets(str, MAXSTRING, stdin);
+	newtasks[neworder - 1] = createTask(neworder, str);
 
-	//clearing buffer
-	//char c[MAXSTRING];
-	//scanf_s("%s",c,MAXSTRING);
 
 	//setting all tasks that come after the new task
-	for (int i = num; i < *numofTasks; i++) {
-		newtasks[i] = tasks[i-1];
+	for (int i = neworder; i < *numofTasks; i++) {
+		newtasks[i] = tasks[i - 1];
+		incOrder(&newtasks[i]);
 	}
 
 	//asking for confirmation
-	printf("Task to be added:\n");
-	printTask(&newtasks[num - 1]);
+	printf("\nTask to be added:\n");
+	printTask(&newtasks[neworder - 1]);
 	int conf;
-	printf("Is this ok?\n0) no\n1) yes\n");
+	printf("\nIs this ok?\n0) no\n1) yes\n");
+
 	scanf_s("%d", &conf);
 	if (conf == 1) {
 		printf("new task has been added\n");
