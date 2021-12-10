@@ -262,7 +262,7 @@ void printRangeTasks(TASK* tasks, int num)
 		printf("Enter the highest task number to view: ");
 		if (scanf_s("%d", &highEnd) && highEnd > lowEnd && highEnd <= num)
 		{
-			printf("Displaying tasks %d through %d\n", lowEnd, highEnd);
+			printf("\nDisplaying tasks %d through %d\n", lowEnd, highEnd);
 			while (lowEnd <= highEnd)
 			{
 				printTask(&tasks[lowEnd - 1]);
@@ -271,32 +271,41 @@ void printRangeTasks(TASK* tasks, int num)
 		}
 		else
 		{
-			printf("High end out of bounds");
+			printf("High end out of bounds\n");
+			clearInputSt();
 		}
 	}
 	else
 	{
-		printf("Low end out of bounds");
+		printf("Low end out of bounds\n");
+		clearInputSt();
 	}
 }
 
 void searchForTask(TASK* tasks, int taskAmt) {
 	char searchKey[MAXSTRING];
-	printf("Enter a search key: ");
+	int exitKey;
+	bool searchRunning = true;
+	printf("Enter a search key (Enter -1 to exit): ");
 	fgets(searchKey, MAXSTRING, stdin);
-	bool taskFound = false;
-	int taskNum = 0;
-	printf("Searching for tasks using search key: %s", searchKey);
-	while (!taskFound && taskNum < taskAmt) {
-		if (!strcmp(searchKey, tasks[taskNum].text)) {
-			printf("Task found at task number %d: %s", tasks[taskNum].order, tasks[taskNum].text);
-			taskFound = true;
+
+	if (exitKey = atoi(searchKey) == -1)//exit if user enters -1
+		searchRunning = false;
+	if (searchRunning) {
+		bool taskFound = false;
+		int taskNum = 0;
+		printf("Searching for tasks using search key: %s", searchKey);
+		while (!taskFound && taskNum < taskAmt) {
+			if (!strcmp(searchKey, tasks[taskNum].text)) {
+				printf("Task found at task number %d: %s", tasks[taskNum].order, tasks[taskNum].text);
+				taskFound = true;
+			}
+			else
+				taskNum++;
 		}
-		else
-			taskNum++;
+		if (!taskFound)
+			printf("Task not found using search key: %s", searchKey);
 	}
-	if (!taskFound)
-		printf("Task not found using search key: %s", searchKey);
 }
 
 void clearInputSt()
