@@ -61,6 +61,7 @@ int main(void) {
 	
 
 	int option, userDefinedTaskNum, lowEnd, highEnd;
+	char searchKey[MAXSTRING];
 	do {
 		welcomeMenu();
 		if (scanf_s("%d", &option)) {
@@ -106,6 +107,10 @@ int main(void) {
 				}
 				break;
 			case 7:
+				printf("Enter a search key: ");
+				fgets(searchKey, MAXSTRING, stdin);
+				fgets(searchKey, MAXSTRING, stdin);
+				searchForTask(tasks, numofTasks, searchKey);
 				break;
 			case 8:
 				break;
@@ -223,6 +228,21 @@ void printRangeTasks(TASK* tasks, int lowEnd, int highEnd) {
 		printTask(&tasks[lowEnd - 1]);
 		lowEnd++;
 	}
+}
+void searchForTask(TASK* tasks, int taskAmt, char searchKey[]) {
+	bool taskFound = false;
+	int taskNum = 0;
+	printf("Searching for tasks using search key: %s", searchKey);
+	while (!taskFound && taskNum < taskAmt) {
+		if (!strcmp(searchKey, tasks[taskNum].text)) {
+			printf("Task found at task number %d: %s", tasks[taskNum].order, tasks[taskNum].text);
+			taskFound = true;
+		}
+		else
+			taskNum++;
+	}
+	if (!taskFound)
+		printf("Task not found using search key: %s", searchKey);
 }
 
 void welcomeMenu() {
