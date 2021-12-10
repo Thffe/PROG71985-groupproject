@@ -65,7 +65,7 @@ int main(void) {
 	do {
 		welcomeMenu();
 		if (scanf_s("%d", &option)) {
-
+			clearInputSt();
 			switch (option) {
 
 			case 1:
@@ -121,6 +121,7 @@ int main(void) {
 		}
 		else {
 			printf("Invalid entry\n");
+			clearInputSt();
 		}
 	} while (option != 8);
 
@@ -138,7 +139,7 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 	printf("Enter a order (enter -1 to exit)\n");
 	do {
 		scanf_s("%d", &neworder);
-
+		clearInputSt();
 		if (neworder == -1) {
 			return tasks;
 		}
@@ -169,7 +170,7 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 	char str[MAXSTRING];
 	printf("Enter the task\n");
 	fgets(str, MAXSTRING, stdin);
-	fgets(str, MAXSTRING, stdin);
+	//clearInputSt();
 	newtasks[neworder - 1] = createTask(neworder, str);
 
 
@@ -186,6 +187,7 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 	printf("\nIs this ok?\n0) no\n1) yes\n");
 
 	scanf_s("%d", &conf);
+	clearInputSt();
 	if (conf == 1) {
 		printf("new task has been added\n");
 		free(tasks);
@@ -245,6 +247,10 @@ void searchForTask(TASK* tasks, int taskAmt, char searchKey[]) {
 		printf("Task not found using search key: %s", searchKey);
 }
 
+void clearInputSt() {
+	char c[MAXSTRING];
+	fgets(c, MAXSTRING, stdin);
+}
 void welcomeMenu() {
 	printf("\nWelcome to your task manager\n");
 	printf("1) Add new task\n");

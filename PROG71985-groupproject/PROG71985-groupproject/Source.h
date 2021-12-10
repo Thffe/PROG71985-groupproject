@@ -5,6 +5,7 @@
 
 void welcomeMenu();
 TASK* addTask(TASK*, int*);
+void clearInputSt();
 void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);
 void printSingleTask(TASK* tasks, int);
