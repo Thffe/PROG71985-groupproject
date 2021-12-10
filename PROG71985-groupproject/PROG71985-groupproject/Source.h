@@ -10,4 +10,4 @@ void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);
 void printSingleTask(TASK*, int);
 void printRangeTasks(TASK*, int);
-void searchForTask(TASK*, int, char[]);
+void searchForTask(TASK*, int);

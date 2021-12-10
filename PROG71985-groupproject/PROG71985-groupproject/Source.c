@@ -96,10 +96,7 @@ int main(void)
 
 				break;
 			case 7:
-				printf("Enter a search key: ");
-				fgets(searchKey, MAXSTRING, stdin);
-				fgets(searchKey, MAXSTRING, stdin);
-				searchForTask(tasks, numofTasks, searchKey);
+				searchForTask(tasks, numofTasks);
 				break;
 			case 8:
 				break;
@@ -265,15 +262,15 @@ void printRangeTasks(TASK* tasks, int num)
 	}
 }
 
-void searchForTask(TASK *tasks, int taskAmt, char searchKey[])
-{
+void searchForTask(TASK* tasks, int taskAmt) {
+	char searchKey[MAXSTRING];
+	printf("Enter a search key: ");
+	fgets(searchKey, MAXSTRING, stdin);
 	bool taskFound = false;
 	int taskNum = 0;
 	printf("Searching for tasks using search key: %s", searchKey);
-	while (!taskFound && taskNum < taskAmt)
-	{
-		if (!strcmp(searchKey, tasks[taskNum].text))
-		{
+	while (!taskFound && taskNum < taskAmt) {
+		if (!strcmp(searchKey, tasks[taskNum].text)) {
 			printf("Task found at task number %d: %s", tasks[taskNum].order, tasks[taskNum].text);
 			taskFound = true;
 		}
