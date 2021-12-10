@@ -82,13 +82,7 @@ int main(void) {
 				printAllTasks(tasks, numofTasks);
 				break;
 			case 5:
-				printf("Enter the task number you wish you view: ");
-				if (scanf_s("%d", &userDefinedTaskNum) && userDefinedTaskNum <= numofTasks && userDefinedTaskNum > 0) {
-					printSingleTask(tasks, userDefinedTaskNum);
-				}
-				else {
-					printf("Task number out of readable task range or invalid.");
-				}
+				printSingleTask(tasks, numofTasks);
 				break;
 			case 6:
 				printf("Enter the lowest task number to view: ");
@@ -222,7 +216,17 @@ void printAllTasks(TASK* tasks, int num) {
 }
 
 void printSingleTask(TASK* tasks, int num) {
-	printTask(&tasks[num - 1]);
+	int taskNum;
+	printf("Enter the task number you wish you view (Enter -1 to exit)");
+	do {
+		scanf_s("%d", &taskNum);
+		clearInputSt();
+		if (taskNum == -1) {
+			break;
+		}
+		if(taskNum<num && taskNum > 0)
+			printTask(&tasks[taskNum - 1]);
+	} while (taskNum <= 0 && taskNum < num);
 }
 
 void printRangeTasks(TASK* tasks, int lowEnd, int highEnd) {

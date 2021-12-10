@@ -8,6 +8,6 @@ TASK* addTask(TASK*, int*);
 void clearInputSt();
 void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);
-void printSingleTask(TASK* tasks, int);
-void printRangeTasks(TASK* tasks, int, int);
+void printSingleTask(TASK*, int);
+void printRangeTasks(TASK*, int, int);
 void searchForTask(TASK*, int, char[]);
