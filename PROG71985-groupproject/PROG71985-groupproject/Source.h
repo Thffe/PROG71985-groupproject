@@ -11,3 +11,4 @@ void printAllTasks(TASK*, int);
 void printSingleTask(TASK*, int);
 void printRangeTasks(TASK*, int);
 void searchForTask(TASK*, int);
+bool createFile();

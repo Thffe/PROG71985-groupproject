@@ -25,10 +25,17 @@ int main(void)
 	char inFile[] = "tasks.txt";
 	char outFile[] = "tasks.txt";
 
-	if ((fpRead = fopen(inFile, "r")) == NULL)
+		if (!createFile())
 	{
 		fprintf(stderr, "Can't open %s for reading\n", inFile);
-		exit(EXIT_FAILURE);
+		printf("Generating blank file\n");
+		fpRead = fopen(inFile, "w"); //create a new file by writing
+		fclose(fpRead); //close writing file
+		fpRead = fopen(inFile, "r"); //open for reading
+	}
+	else {
+		//file found open for reading
+		fpRead = fopen(inFile, "r");
 	}
 
 	TASK *tasks = NULL;
@@ -93,7 +100,7 @@ int main(void)
 				printSingleTask(tasks, numofTasks);
 				break;
 			case 6:
-
+				printRangeTasks(tasks, numofTasks);
 				break;
 			case 7:
 				searchForTask(tasks, numofTasks);
@@ -118,7 +125,18 @@ int main(void)
 	printf("\n");
 	return 0;
 }
+bool createFile() {
+	FILE* fptr;
+	if (fptr = fopen("tasks.txt", "r") == NULL) {
+		return false; //file not found
+	}
+	else {
+		if(fptr != 0)
+			fclose(fptr);
 
+		return true;//file found
+	}
+}
 TASK *addTask(TASK *tasks, int *numofTasks)
 {
 
