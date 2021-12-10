@@ -17,19 +17,21 @@ sometin
 
 #include "Source.h"
 
-int main(void) {
+int main(void)
+{
 
-	FILE* fpRead;
-	FILE* fpWrite;
+	FILE *fpRead;
+	FILE *fpWrite;
 	char inFile[] = "tasks.txt";
 	char outFile[] = "tasks.txt";
 
-	if ((fpRead = fopen(inFile, "r")) == NULL) {
+	if ((fpRead = fopen(inFile, "r")) == NULL)
+	{
 		fprintf(stderr, "Can't open %s for reading\n", inFile);
 		exit(EXIT_FAILURE);
 	}
 
-	TASK* tasks = NULL;
+	TASK *tasks = NULL;
 	char line[MAXSTRING];
 	int numofTasks;
 
@@ -37,36 +39,42 @@ int main(void) {
 	fgets(line, MAXSTRING, fpRead);
 	numofTasks = atoi(line);
 
-	if (numofTasks > 0) {
+	if (numofTasks > 0)
+	{
 		printf("%d tasks found\n", numofTasks);
-		if ((tasks = (TASK*)malloc(sizeof(TASK) * numofTasks)) == NULL) {
+		if ((tasks = (TASK *)malloc(sizeof(TASK) * numofTasks)) == NULL)
+		{
 			fprintf(stderr, "error allocating memory\n");
 			exit(1);
 		}
-		for (int i = 0; i < numofTasks; i++) {
+		for (int i = 0; i < numofTasks; i++)
+		{
 			tasks[i] = readTask(fpRead);
 		}
 	}
-	else {
-		printf("No tasks found\n");	
+	else
+	{
+		printf("No tasks found\n");
 		numofTasks = 0;
 	}
 
-
-	if ((fpWrite = fopen(outFile, "w")) == NULL) {
+	if ((fpWrite = fopen(outFile, "w")) == NULL)
+	{
 		fprintf(stderr, "Can't open %s for writing\n", outFile);
 		exit(EXIT_FAILURE);
 	}
 	writeTasks(fpWrite, outFile, tasks, numofTasks);
-	
 
 	int option, userDefinedTaskNum, lowEnd, highEnd;
 	char searchKey[MAXSTRING];
-	do {
+	do
+	{
 		welcomeMenu();
-		if (scanf_s("%d", &option)) {
+		if (scanf_s("%d", &option))
+		{
 			clearInputSt();
-			switch (option) {
+			switch (option)
+			{
 
 			case 1:
 				tasks = addTask(tasks, &numofTasks);
@@ -76,7 +84,7 @@ int main(void) {
 
 				break;
 			case 3:
-				
+
 				break;
 			case 4:
 				printAllTasks(tasks, numofTasks);
@@ -85,20 +93,7 @@ int main(void) {
 				printSingleTask(tasks, numofTasks);
 				break;
 			case 6:
-				printf("Enter the lowest task number to view: ");
-				if (scanf_s("%d", &lowEnd) && lowEnd > 0 && lowEnd < numofTasks) {
-					printf("Enter the highest task number to view: ");
-					if (scanf_s("%d", &highEnd) && highEnd > lowEnd && highEnd <= numofTasks) {
-						printf("Displaying tasks %d through %d\n", lowEnd, highEnd);
-						printRangeTasks(tasks, lowEnd, highEnd);
-					}
-					else {
-						printf("High end out of bounds");
-					}
-				}
-				else {
-					printf("Low end out of bounds");
-				}
+
 				break;
 			case 7:
 				printf("Enter a search key: ");
@@ -113,7 +108,8 @@ int main(void) {
 				break;
 			}
 		}
-		else {
+		else
+		{
 			printf("Invalid entry\n");
 			clearInputSt();
 		}
@@ -126,37 +122,40 @@ int main(void) {
 	return 0;
 }
 
-TASK* addTask(TASK* tasks, int* numofTasks) {
+TASK *addTask(TASK *tasks, int *numofTasks)
+{
 
 	//getting the order of new task
 	int neworder;
 	printf("Enter a order (enter -1 to exit)\n");
-	do {
+	do
+	{
 		scanf_s("%d", &neworder);
 		clearInputSt();
-		if (neworder == -1) {
+		if (neworder == -1)
+		{
 			return tasks;
 		}
 	} while (neworder <= 0);
 
-
-
-
 	//setting new task's order to the lowest order + 1,
 	//only if new task's order is greater than lowest order + 1
-	if (neworder > *(numofTasks)+1) {
-		neworder = *(numofTasks)+1;
+	if (neworder > *(numofTasks) + 1)
+	{
+		neworder = *(numofTasks) + 1;
 		printf("defaulting to order %d\n", neworder);
 	}
-	*(numofTasks) = *(numofTasks)+1;
+	*(numofTasks) = *(numofTasks) + 1;
 
-	TASK* newtasks;
-	if ((newtasks = (TASK*)malloc(sizeof(TASK) * *numofTasks)) == NULL) {
+	TASK *newtasks;
+	if ((newtasks = (TASK *)malloc(sizeof(TASK) * *numofTasks)) == NULL)
+	{
 		fprintf(stderr, "error allocating memory\n");
 		exit(1);
 	}
 	//setting all tasks that come before the new task
-	for (int i = 0; i < neworder - 1; i++) {
+	for (int i = 0; i < neworder - 1; i++)
+	{
 		newtasks[i] = tasks[i];
 	}
 
@@ -167,9 +166,9 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 	//clearInputSt();
 	newtasks[neworder - 1] = createTask(neworder, str);
 
-
 	//setting all tasks that come after the new task
-	for (int i = neworder; i < *numofTasks; i++) {
+	for (int i = neworder; i < *numofTasks; i++)
+	{
 		newtasks[i] = tasks[i - 1];
 		incOrder(&newtasks[i]);
 	}
@@ -182,12 +181,14 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 
 	scanf_s("%d", &conf);
 	clearInputSt();
-	if (conf == 1) {
+	if (conf == 1)
+	{
 		printf("new task has been added\n");
 		free(tasks);
 		return newtasks;
 	}
-	else {
+	else
+	{
 		printf("new task has not been added\n");
 		free(newtasks);
 		*(numofTasks) = *(numofTasks)-1;
@@ -195,52 +196,84 @@ TASK* addTask(TASK* tasks, int* numofTasks) {
 	}
 }
 
-void writeTasks(FILE* fp, char* filename, TASK* tasks, int num) {
+void writeTasks(FILE *fp, char *filename, TASK *tasks, int num)
+{
 
 	//this clears the write file
-	if ((fp = freopen(filename, "w", fp)) == NULL) {
+	if ((fp = freopen(filename, "w", fp)) == NULL)
+	{
 		fprintf(stderr, "Failed to reopen %s for writing\n", filename);
 		return;
 	}
 
 	fprintf(fp, "%d\n", num);
-	for (int i = 0; i < num; i++) {
+	for (int i = 0; i < num; i++)
+	{
 		writeTask(&tasks[i], fp);
 	}
 }
 
-void printAllTasks(TASK* tasks, int num) {
-	for (int i = 0; i < num; i++) {
+void printAllTasks(TASK *tasks, int num)
+{
+	for (int i = 0; i < num; i++)
+	{
 		printTask(&tasks[i]);
 	}
 }
 
-void printSingleTask(TASK* tasks, int num) {
+void printSingleTask(TASK *tasks, int num)
+{
 	int taskNum;
 	printf("Enter the task number you wish you view (Enter -1 to exit)");
-	do {
+	do
+	{
 		scanf_s("%d", &taskNum);
 		clearInputSt();
-		if (taskNum == -1) {
+		if (taskNum == -1)
+		{
 			break;
 		}
-		if(taskNum<num && taskNum > 0)
+		if (taskNum < num && taskNum > 0)
 			printTask(&tasks[taskNum - 1]);
 	} while (taskNum <= 0 && taskNum < num);
 }
 
-void printRangeTasks(TASK* tasks, int lowEnd, int highEnd) {
-	while (lowEnd < highEnd) {
-		printTask(&tasks[lowEnd - 1]);
-		lowEnd++;
+void printRangeTasks(TASK* tasks, int num)
+{
+	int lowEnd, highEnd;
+	printf("Enter the lowest task number to view: ");
+	if (scanf_s("%d", &lowEnd) && lowEnd > 0 && lowEnd < num)
+	{
+		printf("Enter the highest task number to view: ");
+		if (scanf_s("%d", &highEnd) && highEnd > lowEnd && highEnd <= num)
+		{
+			printf("Displaying tasks %d through %d\n", lowEnd, highEnd);
+			while (lowEnd <= highEnd)
+			{
+				printTask(&tasks[lowEnd - 1]);
+				lowEnd++;
+			}
+		}
+		else
+		{
+			printf("High end out of bounds");
+		}
+	}
+	else
+	{
+		printf("Low end out of bounds");
 	}
 }
-void searchForTask(TASK* tasks, int taskAmt, char searchKey[]) {
+
+void searchForTask(TASK *tasks, int taskAmt, char searchKey[])
+{
 	bool taskFound = false;
 	int taskNum = 0;
 	printf("Searching for tasks using search key: %s", searchKey);
-	while (!taskFound && taskNum < taskAmt) {
-		if (!strcmp(searchKey, tasks[taskNum].text)) {
+	while (!taskFound && taskNum < taskAmt)
+	{
+		if (!strcmp(searchKey, tasks[taskNum].text))
+		{
 			printf("Task found at task number %d: %s", tasks[taskNum].order, tasks[taskNum].text);
 			taskFound = true;
 		}
@@ -251,11 +284,13 @@ void searchForTask(TASK* tasks, int taskAmt, char searchKey[]) {
 		printf("Task not found using search key: %s", searchKey);
 }
 
-void clearInputSt() {
+void clearInputSt()
+{
 	char c[MAXSTRING];
 	fgets(c, MAXSTRING, stdin);
 }
-void welcomeMenu() {
+void welcomeMenu()
+{
 	printf("\nWelcome to your task manager\n");
 	printf("1) Add new task\n");
 	printf("2) Delete existing task\n");

@@ -9,5 +9,5 @@ void clearInputSt();
 void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);
 void printSingleTask(TASK*, int);
-void printRangeTasks(TASK*, int, int);
+void printRangeTasks(TASK*, int);
 void searchForTask(TASK*, int, char[]);
