@@ -1,6 +1,7 @@
 /*
 William Kubica
 Anthony Rooyakkers
+Abdelrahman Hashad
 
 PROG71985 Group Project
 
@@ -87,10 +88,10 @@ int main(void)
 				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
 			case 2:
-
+				deleteTask(tasks);
 				break;
 			case 3:
-
+				updateTask(tasks);
 				break;
 			case 4:
 				printAllTasks(tasks, numofTasks);
@@ -144,7 +145,7 @@ TASK* addTask(TASK* tasks, int* numofTasks)
 
 	//getting the order of new task
 	int neworder;
-	printf("Enter a order (enter -1 to exit)\n");
+	printf("Enter an order (enter -1 to exit)\n");
 	do
 	{
 		scanf_s("%d", &neworder);
@@ -211,6 +212,21 @@ TASK* addTask(TASK* tasks, int* numofTasks)
 		*(numofTasks) = *(numofTasks)-1;
 		return tasks;
 	}
+}
+
+void deleteTask(TASK* tasks)
+{
+	printf("Enter the order number of the task that you would like to delete.\n");
+
+
+
+}
+
+void updateTask(TASK* tasks)
+{
+	printf("Enter the order number of the task that you would like to update.\n");
+
+
 }
 
 void writeTasks(FILE* fp, char* filename, TASK* tasks, int num)
