@@ -88,10 +88,10 @@ int main(void)
 				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
 			case 2:
-				deleteTask(tasks);
+				deleteTask(tasks, &numofTasks);
 				break;
 			case 3:
-				updateTask(tasks);
+				updateTask(tasks, numofTasks);
 				break;
 			case 4:
 				printAllTasks(tasks, numofTasks);
@@ -214,7 +214,7 @@ TASK* addTask(TASK* tasks, int* numofTasks)
 	}
 }
 
-void deleteTask(TASK* tasks)
+void deleteTask(TASK* tasks, int* numofTasks)
 {
 	printf("Enter the order number of the task that you would like to delete.\n");
 
@@ -222,11 +222,40 @@ void deleteTask(TASK* tasks)
 
 }
 
-void updateTask(TASK* tasks)
+void updateTask(TASK* tasks, int* numofTasks)
 {
 	printf("Enter the order number of the task that you would like to update.\n");
 
+	int selectedorder;
+	char* newtask[MAXSTRING];
 
+	scanf_s("%d", &selectedorder);
+	clearInputSt();
+		if (selectedorder >= 1 || selectedorder <= numofTasks)
+		{
+			printf("Enter the updated task to replace the current task.\n");
+			scanf_s("%s", newtask);
+
+			tasks->order = selectedorder;
+
+			setText(tasks, newtask);
+
+			//asking for confirmation
+			printf("\nTask to be added:\n");
+			printTask(&newtask[selectedorder - 1]);
+			int conf;
+			printf("\nIs this ok?\n0) no\n1) yes\n");
+
+			scanf_s("%d", &conf);
+			clearInputSt();
+			printf("new task has been added\n");
+			
+		}
+		else
+		{
+			printf("Doesn't exist.\n");
+			exit(1);
+		}
 }
 
 void writeTasks(FILE* fp, char* filename, TASK* tasks, int num)
@@ -336,8 +365,8 @@ void welcomeMenu()
 {
 	printf("\nWelcome to your task manager\n");
 	printf("1) Add new task\n");
-	printf("2) Delete existing task\n");
-	printf("3) Update existing task\n");
+	printf("2) Delete an existing task\n");
+	printf("3) Update an existing task\n");
 	printf("4) Display all tasks\n");
 	printf("5) Display a single task\n");
 	printf("6) Display a range of tasks\n");
