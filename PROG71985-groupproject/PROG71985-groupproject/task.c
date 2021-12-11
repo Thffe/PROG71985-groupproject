@@ -1,4 +1,8 @@
+/*
+William Kubica
 
+PROG71985 Group Project
+*/
 #include "task.h"
 
 TASK createTask(int o, char t[]) {

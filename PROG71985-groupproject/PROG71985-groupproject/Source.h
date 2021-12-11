@@ -5,8 +5,8 @@
 
 void welcomeMenu();
 TASK* addTask(TASK*, int*);
-void deleteTask(TASK*, int*);
-void updateTask(TASK*, int);
+TASK* deleteTask(TASK*, int*);
+TASK* updateTask(TASK*, int);
 void clearInputSt();
 void writeTasks(FILE*, char*, TASK*, int);
 void printAllTasks(TASK*, int);

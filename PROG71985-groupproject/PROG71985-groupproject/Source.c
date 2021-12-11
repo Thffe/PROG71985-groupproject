@@ -4,16 +4,6 @@ Anthony Rooyakkers
 Abdelrahman Hashad
 
 PROG71985 Group Project
-
-
-3
-1
-something
-2
-sometig
-3
-sometin
-
 */
 
 #include "Source.h"
@@ -88,10 +78,12 @@ int main(void)
 				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
 			case 2:
-				deleteTask(tasks, &numofTasks);
+				tasks = deleteTask(tasks, &numofTasks);
+				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
 			case 3:
-				updateTask(tasks, numofTasks);
+				tasks = updateTask(tasks, numofTasks);
+				writeTasks(fpWrite, outFile, tasks, numofTasks);
 				break;
 			case 4:
 				printAllTasks(tasks, numofTasks);
@@ -214,15 +206,97 @@ TASK* addTask(TASK* tasks, int* numofTasks)
 	}
 }
 
+TASK* deleteTask(TASK* tasks, int* numofTasks)
+{
+	printf("Enter the order number of the task that you would like to delete.\n");
+	int selectedorder;
+	scanf_s("%d", &selectedorder);
+	clearInputSt();
+
+	if (selectedorder >= 1 && selectedorder <= *numofTasks)
+	{
+		*(numofTasks) = *(numofTasks)-1;
+		TASK* newtasks;
+		if ((newtasks = (TASK*)malloc(sizeof(TASK) * *numofTasks)) == NULL)
+		{
+			fprintf(stderr, "error allocating memory\n");
+			exit(1);
+		}
+
+		//copy all tasks that come before the deleted tasks
+		int i = 0;
+		for (i = 0; i < selectedorder-1; i++) {
+			newtasks[i] = tasks[i];
+		}
+		//copy all the tasks that come after the deleted tasks
+		for (i = selectedorder -1; i < *numofTasks; i++) {
+			newtasks[i] = tasks[i+1];
+			decOrder(&newtasks[i]);
+		}
+	
+		//asking for confirmation
+		printf("\nTask to be deleted:\n");
+		printTask(&tasks[selectedorder - 1]);
+
+		int conf;
+		printf("\nIs this ok?\n0) no\n1) yes\n");
+
+		scanf_s("%d", &conf);
+		clearInputSt();
+		if (conf == 1)
+		{
+			printf("The task has been deleted\n");
+			free(tasks);
+			return newtasks;
+		}
+		else
+		{
+			printf("The task has not been deleted\n");
+			*(numofTasks) = *(numofTasks)+1;
+			free(newtasks);
+			return tasks;
+		}
+	
+	}
+	else {
+		printf("Doesn't exist\n");
+		return tasks;
+	}
+
+
+}
+/*
 void deleteTask(TASK* tasks, int* numofTasks)
 {
 	printf("Enter the order number of the task that you would like to delete.\n");
 
+	int selectedorder;
+	scanf_s("%d", &selectedorder);
 
+	printTask(&tasks[selectedorder - 1]);
 
-}
+	int conf;
+	printf("\nAre you sure you want to delete this task?\n0) no\n1) yes\n");
 
-void updateTask(TASK* tasks, int numofTasks)
+	scanf_s("%d", &conf);
+	clearInputSt();
+	if (conf == 1)
+	{
+		setText(&tasks[selectedorder - 1], "\0");
+
+		for (int counter = selectedorder; counter <= numofTasks; counter++)
+		{
+			void setOrder(tasks, counter);
+		}
+		printf("The task has been deleted\n");
+	}
+	else
+	{
+		printf("The task has not been deleted\n");
+	}
+}*/
+
+TASK* updateTask(TASK* tasks, int numofTasks)
 {
 	printf("Enter the order number of the task that you would like to update.\n");
 
@@ -231,16 +305,25 @@ void updateTask(TASK* tasks, int numofTasks)
 
 	scanf_s("%d", &selectedorder);
 	clearInputSt();
-		if (selectedorder >= 1 || selectedorder <= numofTasks)
+		if (selectedorder >= 1 && selectedorder <= numofTasks)
 		{
+			TASK* newtasks;
+			if ((newtasks = (TASK*)malloc(sizeof(TASK) * numofTasks)) == NULL)
+			{
+				fprintf(stderr, "error allocating memory\n");
+				exit(1);
+			}
+			for (int i = 0; i < numofTasks; i++) {
+				newtasks[i] = tasks[i];
+			}
 			printf("Enter the updated task to replace the current task.\n");
 			fgets(newtask, MAXSTRING, stdin);
 
-			setText(&tasks[selectedorder - 1], newtask);
+			setText(&newtasks[selectedorder - 1], newtask);
 
 			//asking for confirmation
 			printf("\nTask updated to:\n");
-			printTask(&tasks[selectedorder - 1]);
+			printTask(&newtasks[selectedorder - 1]);
 			
 			int conf;
 			printf("\nIs this ok?\n0) no\n1) yes\n");
@@ -250,16 +333,20 @@ void updateTask(TASK* tasks, int numofTasks)
 			if (conf == 1)
 			{
 				printf("The task has been updated\n");
+				free(tasks);
+				return newtasks;
 			}
 			else
 			{
 				printf("The task has not been updated\n");
-				//*(numofTasks) = *(numofTasks)-1;
+				free(newtasks);
+				return tasks;
 			}		
 		}
 		else
 		{
 			printf("Doesn't exist.\n");
+			return tasks;
 		}
 }
 
