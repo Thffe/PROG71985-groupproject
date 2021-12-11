@@ -222,39 +222,44 @@ void deleteTask(TASK* tasks, int* numofTasks)
 
 }
 
-void updateTask(TASK* tasks, int* numofTasks)
+void updateTask(TASK* tasks, int numofTasks)
 {
 	printf("Enter the order number of the task that you would like to update.\n");
 
 	int selectedorder;
-	char* newtask[MAXSTRING];
+	char newtask[MAXSTRING];
 
 	scanf_s("%d", &selectedorder);
 	clearInputSt();
 		if (selectedorder >= 1 || selectedorder <= numofTasks)
 		{
 			printf("Enter the updated task to replace the current task.\n");
-			scanf_s("%s", newtask);
+			fgets(newtask, MAXSTRING, stdin);
 
-			tasks->order = selectedorder;
-
-			setText(tasks, newtask);
+			setText(&tasks[selectedorder - 1], newtask);
 
 			//asking for confirmation
-			printf("\nTask to be added:\n");
-			printTask(&newtask[selectedorder - 1]);
+			printf("\nTask updated to:\n");
+			printTask(&tasks[selectedorder - 1]);
+			
 			int conf;
 			printf("\nIs this ok?\n0) no\n1) yes\n");
 
 			scanf_s("%d", &conf);
 			clearInputSt();
-			printf("new task has been added\n");
-			
+			if (conf == 1)
+			{
+				printf("The task has been updated\n");
+			}
+			else
+			{
+				printf("The task has not been updated\n");
+				//*(numofTasks) = *(numofTasks)-1;
+			}		
 		}
 		else
 		{
 			printf("Doesn't exist.\n");
-			exit(1);
 		}
 }
 
